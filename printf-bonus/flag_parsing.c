@@ -17,7 +17,7 @@ int	precision(const char *s, t_flag *f, va_list *ap)
 	char	*flag;
 	s++;
 	f->precision = ft_atoi(s);
-	flag = ft_memchr((const void *)f->flags, '0', ft_strlen((f->flags)));
+	flag =ft_strchr((const void *)f->flags, '0');
 	if (flag != 0)
 		*flag = 1;
 	while (!ft_isalpha(*s))
@@ -27,7 +27,7 @@ int	precision(const char *s, t_flag *f, va_list *ap)
 		f->width = -1;
 		if (ft_strchr(f->flags, '-'))
 		{
-			flag = ft_memchr(f->flags, '-', ft_strlen(f->flags));
+			flag = ft_strchr(f->flags, '-');
 			*flag = 1;
 		}
 	}
@@ -45,7 +45,6 @@ int	width(const char *s, t_flag *f, va_list *ap)
 		f->precision = -1;
 		return (bonus_hub (*s, ap, f));
 	}
-	
 	while (s[i] != '.' && !ft_isalpha(s[i]))
 		i++;
 	f->width = ft_atoi(s);
@@ -63,10 +62,14 @@ int	flg_pars(const char *s, t_flag *f, va_list *ap)
 	char	*flag;
 	int		i;
 
+	f->width = -1;
+	f->precision = -1;
 	flag = "+ #-0";
+	i = -1;
+	while (s[++i] && !ft_isalpha(s[i]))
+		if (s[i] == '%')
+			return(bonus_hub (s[i], ap, f));
 	i = 0;
-	if (ft_isalpha(*s))
-		return (bonus_hub (*s, ap, 0));
 	while (ft_strchr(flag, *s))
 	{
 		if (!ft_strchr(f->flags, *s))
@@ -74,11 +77,11 @@ int	flg_pars(const char *s, t_flag *f, va_list *ap)
 		s++;
 	}
 	f->flags[i] = 0;
-	flag = ft_memchr(f->flags, ' ', ft_strlen(f->flags));
+	flag = ft_strchr(f->flags, ' ');
 	if (flag && ft_strchr(f->flags, '+') )
-		*flag= 1;
-	flag = ft_memchr(f->flags, '0', ft_strlen(f->flags));
+		*flag = 1;
+	flag = ft_strchr(f->flags, '0');
 	if (flag && ft_strchr(f->flags, '-') )
-		*flag= 1;
+		*flag = 1;
 	return (width(s, f, ap));
 }

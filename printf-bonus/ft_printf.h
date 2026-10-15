@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include "libft.h"
 
-// pour les tests:
 # include <stdio.h>
 
 
@@ -42,11 +41,11 @@ int	write_zeroes(int n_space);
 int	count_len_base(long unsigned int nb, int base);
 int	formating_i2(t_flag *f, int len, int nb, int i);
 int	formating_i(t_flag *f, int len, int nb, int i);
-int	hub_putnbr_i(const char type, va_list *ap, t_flag *f);
+int	hub_putnbr_i(va_list *ap, t_flag *f);
 int	lu_putnbr_base(unsigned long int nb, int i, int base, int type);
 int	formating_u(t_flag *f, int len, unsigned int nb, int i);
-int	hub_putnbr_u(const char type, va_list *ap, t_flag *f);
-int	hub_putnbr_p(const char type, va_list *ap, t_flag *f);
+int	hub_putnbr_u(va_list *ap, t_flag *f);
+int	hub_putnbr_p(va_list *ap, t_flag *f);
 int	hub_putnbr_x(const char type, va_list *ap, t_flag *f);
 int	formating_x(t_flag *f, int len, unsigned long int nb, int type);
 int	formating_x2(t_flag *f, int len, unsigned long int nb, int type);

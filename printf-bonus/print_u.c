@@ -17,11 +17,9 @@ int	lu_putnbr_base(unsigned long int nb, int i, int base, int type)
 	char	*b;
 
 	b = "0123456789abcdef";
-	if (type == 'x' || type == 'p' || type == 'X')
-		base = 16;
 	if (type == 'X')
 		b = "0123456789ABCDEF";
-	if (nb >= base)
+	if (nb >= (unsigned long int)base)
 		i = lu_putnbr_base((nb / base), i, base, type);
 	nb = b[(nb % base)];
 	i += write (1, &nb, 1);
@@ -55,7 +53,7 @@ int	formating_u(t_flag *f, int len, unsigned int nb, int i)
 	return (i);
 }
 
-int	hub_putnbr_u(const char type, va_list *ap, t_flag *f)
+int	hub_putnbr_u(va_list *ap, t_flag *f)
 {
 	unsigned int	u_nb;
 	int				len;
@@ -66,6 +64,3 @@ int	hub_putnbr_u(const char type, va_list *ap, t_flag *f)
 		f->precision = f->width;
 	return (formating_u(f, len, u_nb, 0));
 }
-
-		
-	

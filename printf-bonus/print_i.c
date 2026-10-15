@@ -11,15 +11,16 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
 int	putnbr(int n, int i)
 {
-	long nb;
-
-	nb = (long)n;
-	if (!(nb < 9 && nb > -9))
-		i = putnbr((int)(nb / 10), i);
-	nb = (nb % 10) + 48;
-	i += write (1, &nb, 1);
+	if (n > 9 || n < -9)
+		i = putnbr((n / 10), i);
+	n = (n % 10);
+	if (n < 0)
+		n *= -1;
+	n += 48;
+	i += write (1, &n, 1);
 	return (i);
 }
 
@@ -75,7 +76,7 @@ int	formating_i2(t_flag *f, int len, int nb, int i)
 		i += write_zeroes (f->precision - len);
 	if (nb == -2147483648)
 		i += write (1, "2147483648", 10);
-	else 
+	else
 		i += putnbr (nb, 0);
 	return (i);
 }
@@ -85,11 +86,11 @@ int	formating_i(t_flag *f, int len, int nb, int i)
 	if (f && ft_strchr(f->flags, '-'))
 	{
 		if (nb < 0)
-			i = write(1, "-", 1);
+			i += write(1, "-", 1);
 		else if (ft_strchr(f->flags, '+') && nb > 0)
-			i = write(1, "+", 1);
+			i += write(1, "+", 1);
 		else if (ft_strchr(f->flags, ' ') && nb >= 0)
-			i = write(1, " ", 1);
+			i += write(1, " ", 1);
 		if (len < f->precision)
 			i += write_zeroes (f->precision - len); 
 		if (nb == -2147483648)
@@ -103,7 +104,7 @@ int	formating_i(t_flag *f, int len, int nb, int i)
 	return (formating_i2(f, len, nb, 0));
 }
 
-int	hub_putnbr_i(const char type, va_list *ap, t_flag *f)
+int	hub_putnbr_i(va_list *ap, t_flag *f)
 {
 	int				len;
 	int				nb;
@@ -122,5 +123,5 @@ int	hub_putnbr_i(const char type, va_list *ap, t_flag *f)
 		else
 			f->precision = f->width;
 	}
-	return (formating_i(f, len, nb, 0)); // appelle fonction d'après
+	return (formating_i(f, len, nb, 0));
 }

@@ -40,7 +40,7 @@ int	formating_x2(t_flag *f, int len, unsigned long int nb, int type)
 		return (i);	
 }
 
-int	formating_x(t_flag *f, int len, unsigned long int nb, int type)
+int	formating_x(t_flag *f, int len, long unsigned int nb, int type)
 {
 	int	i;
 
@@ -83,17 +83,41 @@ int	hub_putnbr_x(const char type, va_list *ap, t_flag *f)
 	return (formating_x(f, len, lx_nb, type));
 }
 
-int	hub_putnbr_p(const char type, va_list *ap, t_flag *f)
+int	nil(t_flag *f)
 {
-	long unsigned int		address;
+	int	i;
+
+	i = 0;
+	if (!f || f->width < 5)
+		return (write(1, "(nil)", 5));
+	if (ft_strchr(f->flags, '-'))
+	{
+		i += write(1, "(nil)", 5);
+		i += write_space(f->width - i);
+		return (i);
+	}
+	i += write_space(f->width - 5);
+	i += write(1, "(nil)", 5);
+	return (i);
+}
+
+int	hub_putnbr_p(va_list *ap, t_flag *f)
+{
+	long unsigned int	address;
 	int					len;
-	char				*flag;
 
 	address = va_arg(*ap, long unsigned int);
-	len = count_len_base(address, 16);
-	// check "nil"!!!
+	if (address == 0)
+		return (nil(f));
+	else
+		len = count_len_base(address, 16);
 	if (f && ft_strchr(f->flags, '0') && f->precision < 0)
 		f->precision = f->width;
+	if (!f)
+	{
+		write (1, "0x", 2);
+		return (lu_putnbr_base (address, 0, 16, 'x') + 2);
+	}
 	f->flags[ft_strlen(f->flags)] = '#';
-	return (formating_x(f, len, address, 'x'));
+	return (formating_x(f, len, address, 'p'));
 }
