@@ -16,11 +16,9 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*current;
 	t_list	*next_address;
-	int		i;
 
 	if (!lst || !*lst)
 		return ;
-	i = 0;
 	current = *lst;
 	while (current)
 	{
@@ -30,7 +28,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 		free (current);
 		current = NULL;
 		current = next_address;
-		i++;
 	}
 	lst[0] = NULL;
 }
