@@ -34,8 +34,8 @@ int	null(t_flag *f)
 
 	i = 0;
 	len = 6;
-	if (f &&!(f->precision < 0 || f->precision > 6))
-		len = f->precision;
+	if (f && !(f->precision < 0 || f->precision > 5))
+		return(0);
 	if (!f || f->width < 6)
 		return (write(1, "(null)", len));
 	if (ft_strchr(f->flags, '-'))

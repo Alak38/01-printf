@@ -17,7 +17,7 @@ int	count_len_base(long unsigned int nb, t_flag *f, int base)
 	int	len;
 
 	len = 0;
-	if (nb == 0 && f->precision == 0)
+	if (nb == 0 && f && f->precision == 0)
 		return (0);
 	if (nb == 0)
 		return (1);

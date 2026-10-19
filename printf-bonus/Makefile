@@ -6,7 +6,7 @@
 #    By: atardy <atardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/07 11:35:32 by atardy            #+#    #+#              #
-#    Updated: 2026/10/17 09:10:52 by atardy           ###   ########.fr        #
+#    Updated: 2026/10/19 11:27:04 by atardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ MAKE = make
 CFLAGS = -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 SOURCES = flag_parsing.c print_i.c print_x.c \
-	ft_printf.c	print_c_s.c	print_u.c \
+	ft_printf.c	print_c_s.c	print_u.c
 HEAD = ft_printf.h
 OBJECTS = $(SOURCES:.c=.o)
 

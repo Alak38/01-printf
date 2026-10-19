@@ -81,23 +81,23 @@ int	hub_putnbr_x(const char type, va_list *ap, t_flag *f)
 	return (formating_x(f, len, lx_nb, type));
 }
 
-// int	nil(t_flag *f)
-// {
-// 	int	i;
+int	nil(t_flag *f)
+{
+	int	i;
 
-// 	i = 0;
-// 	if (!f || f->width < 5)
-// 		return (write(1, "(nil)", 5));
-// 	if (ft_strchr(f->flags, '-'))
-// 	{
-// 		i += write(1, "(nil)", 5);
-// 		i += write_space(f->width - i);
-// 		return (i);
-// 	}
-// 	i += write_space(f->width - 5);
-// 	i += write(1, "(nil)", 5);
-// 	return (i);
-// }
+	i = 0;
+	if (!f || f->width < 5)
+		return (write(1, "(nil)", 5));
+	if (ft_strchr(f->flags, '-'))
+	{
+		i += write(1, "(nil)", 5);
+		i += write_space(f->width - i);
+		return (i);
+	}
+	i += write_space(f->width - 5);
+	i += write(1, "(nil)", 5);
+	return (i);
+}
 
 int	hub_putnbr_p(va_list *ap, t_flag *f)
 {
@@ -105,9 +105,9 @@ int	hub_putnbr_p(va_list *ap, t_flag *f)
 	int					len;
 
 	address = va_arg(*ap, long unsigned int);
-	// if (address == 0)
-	// 	return (nil(f));
-	// else
+	if (address == 0)
+		return (nil(f));
+	else
 		len = count_len_base(address, f, 16);
 	if (f && ft_strchr(f->flags, '0') && f->precision < 0)
 		f->precision = f->width;

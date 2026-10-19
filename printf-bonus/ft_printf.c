@@ -30,7 +30,32 @@ int	bonus_hub(const char type, va_list *ap, t_flag *f)
 		return (hub_putnbr_x(type, ap, f));
 	if (type == 'p')
 		return (hub_putnbr_p(ap, f));
-	return (0);
+	return (-1);
+}
+
+int	ft_printf_2(const char *text, va_list *ap, t_flag *f)
+{
+	int		i;
+	int		ret;
+
+	i = 0;
+	while (*text)
+	{
+		if (*text != '%')
+			i += write(1, text, 1);
+		else if (*text == '%')
+		{
+			text++;
+			ret = flg_pars(text, f, ap);
+			if (ret == -1)
+				return (i);
+			i += ret;
+			while (*text && !(ft_isalpha(*text) || *text == '%'))
+				text++;
+		}
+		text++;
+	}
+	return (i);
 }
 
 int	ft_printf(const char *text, ...)
@@ -43,20 +68,7 @@ int	ft_printf(const char *text, ...)
 	if (f.flags == NULL)
 		return (0);
 	va_start(ap, text);
-	i = 0;
-	while (*text)
-	{
-		if (*text != '%')
-			i += write(1, text, 1);
-		else if (*text == '%')
-		{
-			text++;
-			i += flg_pars(text, &f, &ap);
-			while (*text && !(ft_isalpha(*text) || *text == '%'))
-				text++;
-		}
-		text++;
-	}
+	i = ft_printf_2(text, &ap, &f);
 	va_end(ap);
 	free (f.flags);
 	return (i);
@@ -64,26 +76,29 @@ int	ft_printf(const char *text, ...)
 
 // int	main(void)
 // {
-// 	printf ("\ntest de base\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%c|/|%s|/|%d|/|%u|/|%x|/|%X|/|%p|", 'a', "SALUT", -912, 912, 912, 912, &printf));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%c|/|%s|/|%d|/|%u|/|%x|/|%X|/|%p|", 'a', "SALUT", -912, 912, 912, 912, &printf));
-// 	printf ("\ntest avec %%s et largueur > précision\n");
+// 	// printf ("\ntest de base\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%c|/|%s|/|%d|/|%u|/|%x|/|%X|/|%p|", 'a', "SALUT", -912, 912, 912, 912, &printf));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%c|/|%s|/|%d|/|%u|/|%x|/|%X|/|%p|", 'a', "SALUT", -912, 912, 912, 912, &printf));
+// 	// printf ("\ntest avec %%s et largueur > précision\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%10.5s|", "Salut!Yo!"));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%10.5s|", "Salut!Yo!"));
+// 	// printf ("\ntest avec %%s et largueur < précision\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%5.10s|", "Salut!Yo!"));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%5.10s|", "Salut!Yo!"));
+// 	// printf ("\ntest avec %%d et largueur > précision\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%10.5d|", 912));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%10.5d|", 912));
+// 	// printf ("\ntest avec %%d et largueur < précision\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%5.10d|", 912));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%5.10d|", 912));
+// 	// printf ("\ntest %%x avec # puis # et -\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%#x| |%#-10x|", 912, 912));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%#x| |%-#10x|", 912, 912));
+// 	// printf ("\nla même avec %%X\n");
+// 	// printf ("\ni perso = %d\n", ft_printf("retour perso |%#X| |%#-10X|", 912, 912));
+// 	// printf ("\ni offic = %d\n", printf("retour offic |%#X| |%-#10X|", 912, 912));
 // 	printf ("\ni perso = %d\n", ft_printf("retour perso |%10.5s|", "Salut!Yo!"));
 // 	printf ("\ni offic = %d\n", printf("retour offic |%10.5s|", "Salut!Yo!"));
 // 	printf ("\ntest avec %%s et largueur < précision\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%5.10s|", "Salut!Yo!"));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%5.10s|", "Salut!Yo!"));
-// 	printf ("\ntest avec %%d et largueur > précision\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%10.5d|", 912));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%10.5d|", 912));
-// 	printf ("\ntest avec %%d et largueur < précision\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%5.10d|", 912));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%5.10d|", 912));
-// 	printf ("\ntest %%x avec # puis # et -\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%#x| |%#-10x|", 912, 912));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%#x| |%-#10x|", 912, 912));
-// 	printf ("\nla même avec %%X\n");
-// 	printf ("\ni perso = %d\n", ft_printf("retour perso |%#X| |%#-10X|", 912, 912));
-// 	printf ("\ni offic = %d\n", printf("retour offic |%#X| |%-#10X|", 912, 912));
 // 	return (0);
 // }
